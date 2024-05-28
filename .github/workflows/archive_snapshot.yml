@@ -1,0 +1,31 @@
+name: Archive Snapshot
+
+on:
+  schedule:
+    # Archive.org allows for 5 snapshots per day, so we spread it out 5 hours apart:
+    # 2am, 7am, midday, 5pm, 10pm
+    - cron: '0 2/5 * * *'
+  workflow_dispatch:
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: npm install puppeteer
+
+    - name: Archive URL
+      env:
+        WA_USERNAME: ${{ secrets.WA_USERNAME }}
+        WA_PASSWORD: ${{ secrets.WA_PASSWORD }}
+        TARGET_URL: ${{ env.TARGET_URL}}
+      run: node archive.js
