@@ -41,8 +41,6 @@ const fs = require('fs');
   await page.goto('https://web.archive.org/save');
 
   await page.waitForSelector('#web-save-form');
-  // Screenshot before saving
-  await page.screenshot({ path: 'before_saving.png' });
 
   // Input the target URL
   const saveForm = await page.$('#web-save-form');
@@ -52,6 +50,8 @@ const fs = require('fs');
   const captureOutlinks = await saveForm.$('#capture_outlinks');
   await captureOutlinks.click();
 
+  // Screenshot before saving
+  await page.screenshot({ path: 'before_saving.png' });
   const captureBtn = await saveForm.$('input[type="submit"]');
   await captureBtn.click();
 
