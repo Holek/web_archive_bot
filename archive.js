@@ -19,9 +19,12 @@ const fs = require('fs');
 
   // Login
   const loginForm = await page.$('form[name="login-form"]');
-  await loginForm.type('input[name="username"]', username);
-  await loginForm.type('input[name="password"]', password);
-  await loginForm.click('input[type="submit"]');
+  const usernameField = await loginForm.$('input[name="username"]');
+  await usernameField.type(username);
+  const passwordField = await loginForm.$('input[name="password"]');
+  await passwordField.type(password);
+  const submitBtn = await loginForm.$('input[type="submit"]');
+  await submitBtn.click();
 
   try {
     await page.waitForNavigation({ timeout: 60000 });
@@ -43,9 +46,14 @@ const fs = require('fs');
 
   // Input the target URL
   const saveForm = await page.$('#web-save-form');
-  await saveForm.type('#web-save-url-input', targetUrl);
-  await saveForm.click('#capture_outlinks');
-  await saveForm.click('input[type="submit"]');
+  const urlField = await saveForm.$('#web-save-url-input');
+  await urlField.type(targetUrl);
+
+  const captureOutlinks = await saveForm.$('#capture_outlinks');
+  await captureOutlinks.click();
+
+  const captureBtn = await saveForm.$('input[type="submit"]');
+  await captureBtn.click();
 
   // Wait for the snapshot to be saved
   await page.waitForSelector('#spn-result');
