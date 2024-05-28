@@ -27,8 +27,9 @@ jobs:
       env:
         WA_USERNAME: ${{ secrets.WA_USERNAME }}
         WA_PASSWORD: ${{ secrets.WA_PASSWORD }}
-        TARGET_URL: ${{ env.TARGET_URL}}
+        TARGET_URL: ${{ vars.TARGET_URL }}
       run: node archive.js
+      continue-on-error: true
 
     - name: Upload screenshots
       uses: actions/upload-artifact@v2
