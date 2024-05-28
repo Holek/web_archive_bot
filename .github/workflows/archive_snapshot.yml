@@ -29,3 +29,14 @@ jobs:
         WA_PASSWORD: ${{ secrets.WA_PASSWORD }}
         TARGET_URL: ${{ env.TARGET_URL}}
       run: node archive.js
+
+    - name: Upload screenshots
+      uses: actions/upload-artifact@v2
+      with:
+        name: screenshots
+        path: |
+          before_login.png
+          after_login.png
+          login_timeout.png
+          before_saving.png
+          after_saving.png
