@@ -60,7 +60,10 @@ const fs = require('fs');
   // Screenshot after saving
   await page.screenshot({ path: 'after_saving.png' });
 
+  const year = (new Date()).getFullYear();
+  
   console.log(`Snapshot for ${targetUrl} is being saved.`);
+  console.log(`Check out previous snapshots at: https://web.archive.org/web/${year}0000000000*/${targetUrl}`);
 
   await browser.close();
 })();
