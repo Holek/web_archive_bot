@@ -11,7 +11,7 @@ CURRENT_HOUR=$(date +%H)
 
 if [ "$CURRENT_HOUR" -lt 8 ]; then
     CURRENT_SLOT=0
-elif [ "$CURRENT_HOUR" -lt 16]; then
+elif [ "$CURRENT_HOUR" -lt 16 ]; then
     CURRENT_SLOT=1
 else
     CURRENT_SLOT=2

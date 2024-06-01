@@ -32,5 +32,5 @@ jobs:
       env:
         WA_USERNAME: ${{ secrets.WA_USERNAME }}
         WA_PASSWORD: ${{ secrets.WA_PASSWORD }}
-      run: archive_transport.sh
+      run: ./archive_transport.sh
 
