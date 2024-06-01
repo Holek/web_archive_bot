@@ -32,7 +32,6 @@ jobs:
       env:
         WA_USERNAME: ${{ secrets.WA_USERNAME }}
         WA_PASSWORD: ${{ secrets.WA_PASSWORD }}
-        TARGET_URL: ${{ vars.TARGET_URL }}
       run: |
         ID_FILE="transport_ids"
         TOTAL_IDS=$(wc -l < "$ID_FILE")
