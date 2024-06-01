@@ -1,0 +1,62 @@
+name: Archive Snapshot
+
+on:
+  schedule:
+    #We only have to update 3 URLs per day, so we run it at different times to avoid conflicts with other jobs
+    # 1am, 9am, 5pm
+    - cron: '0 1,9,17 * * *'
+  workflow_dispatch:
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Setup bc
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y bc
+
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: npm install puppeteer
+
+    - name: Archive URL
+      env:
+        WA_USERNAME: ${{ secrets.WA_USERNAME }}
+        WA_PASSWORD: ${{ secrets.WA_PASSWORD }}
+        TARGET_URL: ${{ vars.TARGET_URL }}
+      run: |
+        ID_FILE="transport_ids"
+        TOTAL_IDS=$(wc -l < "$ID_FILE")
+
+        CURRENT_HOUR=$(date +%H)
+
+        if [ "$CURRENT_HOUR" -lt 8 ]; then
+            CURRENT_SLOT=0
+        elif [ "$CURRENT_HOUR" -lt 16]; then
+            CURRENT_SLOT=1
+        else
+            CURRENT_SLOT=2
+        fi
+
+        DAY_OF_YEAR=$(date +%j)
+        SLOT_NUMBER=$(( (DAY_OF_YEAR - 1) * SLOTS_PER_DAY + CURRENT_SLOT + 1 ))
+
+        if [ "$SLOT_NUMBER" -gt "$TOTAL_IDS" ]; then
+            echo "No more IDs to process."
+            exit 0
+        fi
+
+        sed -n "${SLOT_NUMBER}p" "$ID_FILE" | while read -r ID; do
+            echo "Archiving ID: $ID"
+            TARGET_URL="http://tabor.we.wroclawiu.net/showveh.php?num=${ID}" node archive.js
+        done
+
