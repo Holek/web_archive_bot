@@ -1,4 +1,4 @@
-name: Archive Snapshot
+name: Archive Transport Data
 
 on:
   schedule:
