@@ -4,7 +4,7 @@ on:
   schedule:
     #We only have to update 3 URLs per day, so we run it at different times to avoid conflicts with other jobs
     # 1am, 9am, 5pm
-    - cron: '0 1,9,17 * * *'
+    - cron: '0 1,9,18 * * *'
   workflow_dispatch:
 
 jobs:
